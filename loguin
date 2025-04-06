@@ -23,5 +23,23 @@ def register():
         </form>
     ''')
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        # ここでユーザー認証ロジックを追加
+        if username in users and users[username] == password:
+            return 'ログイン成功！'
+        else:
+            return 'ログイン失敗！'
+    return render_template_string('''
+        <form method="post">
+            ユーザー名: <input type="text" name="username"><br>
+            パスワード: <input type="password" name="password"><br>
+            <input type="submit" value="ログイン">
+        </form>
+    ''')
+
 if __name__ == '__main__':
     app.run(debug=True)
