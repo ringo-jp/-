@@ -1,1 +1,27 @@
-yu
+from flask import Flask, request, render_template_string
+
+app = Flask(__name__)
+
+# ユーザーデータを一時的に保存する辞書
+users = {}
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        if username in users:
+            return 'このユーザー名は既に登録されています。'
+        else:
+            users[username] = password
+            return '登録成功！'
+    return render_template_string('''
+        <form method="post">
+            ユーザー名: <input type="text" name="username"><br>
+            パスワード: <input type="password" name="password"><br>
+            <input type="submit" value="登録">
+        </form>
+    ''')
+
+if __name__ == '__main__':
+    app.run(debug=True)
